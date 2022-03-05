@@ -1,0 +1,85 @@
+html.override {
+  color-scheme: normal !important;
+}
+
+ul{
+  list-style-type:  none;
+  padding: 0;
+}
+
+li{
+  display:inline-block;
+  margin-left:5%;
+  margin-right:5%;
+  padding-left:1rem;
+  padding-right:1rem;
+  background-color: #e2ebf3;
+  border-radius:20%;
+}
+
+li:hover{
+  background: #bfc7ce;
+  cursor: pointer;
+}
+
+.shown {
+  background-color: #cad5df;
+}
+
+.subSelected {
+  background-color: #e2ebf3;
+}
+
+.selected {
+  background-color: #bbdefb;
+}
+
+.sameNum {
+  background-color: #829aae;
+}
+
+.square{
+  border: 1px solid rgba(0, 0, 0,0.2);
+}
+
+.left{
+  border-left: 2px solid black;
+}
+
+.right{
+  border-right: 2px solid black ;
+}
+
+.top{
+  border-top: 2px solid black ;
+}
+
+.bottom{
+  border-bottom: 2px solid black;
+}
+
+.button {
+  background-color: #dce3ed;
+  border:none;
+  border-radius: 50%;
+  height:3rem;
+  width:3rem;
+  margin: 0 2%;
+}
+
+.button:hover{
+  background-color: #acb2ba;
+}
+
+.numPad {
+  background-color: #dce3ed;
+  border:0.5px solid black;
+}
+
+.numPad:hover {
+  background-color: #acb2ba;
+}
+
+.noteActive{
+  background-color: #c2deff;
+}
