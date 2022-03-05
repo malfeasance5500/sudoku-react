@@ -14,6 +14,7 @@ function UndoButton() {
 
     if (undoAction == undefined) return;
 
+    // run through the list of returned items and dispatch the undo action
     for (let undoItem of undoAction) {
       console.log(undoItem);
       dispatch(undoItem);

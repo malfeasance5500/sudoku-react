@@ -17,6 +17,7 @@ const randGen = (sidesPerSquare = 3) => {
   return final;
 };
 
+// used to deep copy properties, so there will be no clashing when performing resets
 const deepCopy = (inObject) => {
   let outObject, value, key;
 
@@ -36,11 +37,14 @@ const deepCopy = (inObject) => {
   return outObject;
 };
 
+// run N times, N being number of rows in the sudoku
 const rowCheck = (
   out,
   rowCount,
   sidesPerSquare = 3,
+  // soft limite is for numbers in a row
   softLimits,
+  // squareLimit is for numbers in each square. There are N squares in the board
   squareLimit
 ) => {
   // let prevSoftState = [...softLimits];
@@ -50,6 +54,7 @@ const rowCheck = (
   let prevSquareState = deepCopy(squareLimit);
 
   let numRowAdd = [];
+  // generate a random row of integers 
   let hardLimit = randGen(sidesPerSquare);
 
   let rowLog = [];
@@ -77,6 +82,7 @@ const rowCheck = (
       // var rowSoftLimit = [...softLimit];
       var rowSoftLimit = deepCopy(softLimit);
 
+      // remove numbers that have been used in column, as well as bigSquare
       for (let prevSquare = rowCount - 1; prevSquare >= 0; prevSquare--) {
         let taken = out[prevSquare][currentSquareCount];
         // console.log("out", taken);
@@ -97,6 +103,7 @@ const rowCheck = (
 
       let addToRow = rowSoftLimit[0];
 
+      // if there is a number that is available to add to the row, add it 
       if (addToRow) {
         // console.log("currentsquare", currentSquareCount, "addtorow", addToRow);
         prevSoftState[currentSquareCount][addToRow] = [addToRow, squareCalc];
@@ -108,6 +115,8 @@ const rowCheck = (
         hardLimit.splice(hardLimit.indexOf(addToRow), 1);
         softLimit.splice(softLimit.indexOf(addToRow), 1);
       } else {
+
+        // if the first number left in softlimit is not available, we will check for other numbers in soft limit if we can add it 
         let again = true;
         let squareCheck = 0;
         let limitCounter = 0;

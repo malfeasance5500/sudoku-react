@@ -18,6 +18,7 @@ function NumSpace(props) {
       !isNaN(e.key) &&
       e.key != 0
     ) {
+      // if notes mode is not enabled
       if (!isNote) {
         dispatch(
           addUndo(
@@ -49,6 +50,7 @@ function NumSpace(props) {
           parseInt(e.key)
         );
       } else {
+        // if notes mode is enabled
         let notes = { ...numSpaceState.notes };
         const key = parseInt(e.key);
         if (notes[key]) delete notes[key];
@@ -80,6 +82,7 @@ function NumSpace(props) {
     }
   };
 
+  // return classes to render border css
   const returnClass = () => {
     let classString = "";
     if (!numSpaceState.hidden) classString += "shown ";
@@ -100,8 +103,6 @@ function NumSpace(props) {
       <div
         className={returnClass() + " square"}
         style={{
-          // paddingBottom: "25%",
-          // paddingTop: "25%",
           
           position: "relative",
           textAlign: "center",
@@ -136,15 +137,9 @@ function NumSpace(props) {
           style={{
             zIndex: 9,
             position: "relative",
-            // width: "100%",
-            // height: "auto",
-            // top: numSpaceState.row * 10.3 + "%",
             display: "grid",
             fontSize: "0.5em",
-            // borderTop: "5px solid black",
             top: "0",
-            // textAlign: "justify",
-            // justifyContent: "space-around",
             alignItems: "center",
             gridTemplateColumns: `repeat(${sidesPerSquare}, 1fr)`,
             userSelect: "none",

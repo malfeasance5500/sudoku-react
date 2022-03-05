@@ -2,7 +2,6 @@ import { ADD_UNDO, REMOVE_UNDO } from "../actions/types";
 
 const INITIAL_STATE = [];
 
-// TODO: Implement undo
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_UNDO:

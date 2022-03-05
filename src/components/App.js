@@ -16,12 +16,9 @@ function App() {
   };
 
   return (
-    // <div  onClick={()=>alert("app")} className="App">
     <div className="App">
-      {/* <Button clickHandler={clickHandler} />
-      <Button clickHandler={clickHandler} />
-      <Button clickHandler={clickHandler} /> */}
       <Board />
+      a
     </div>
   );
 }

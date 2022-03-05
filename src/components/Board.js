@@ -64,6 +64,7 @@ function Board() {
     // console.log(genNum);
   }, [boardState]);
 
+  // Calculates which squares to add css styles to upon square click 
   const spaceClickHandler = (
     row,
     col,
@@ -91,7 +92,6 @@ function Board() {
         colCount < selectedCol + boardState.sidesPerSquare;
         colCount++
       ) {
-        // console.log(rowCount, colCount, selectedCol, selectedRow);
         dispatch(
           setSquare(rowCount * boardState.sidesPerSquare ** 2 + colCount, {
             class: "subSelected",
@@ -144,6 +144,7 @@ function Board() {
     dispatch(setSelected(row * boardState.sidesPerSquare ** 2 + col));
   };
 
+  // check if the squares have the same num
   const checkSameNum = (
     coord,
     selected,
