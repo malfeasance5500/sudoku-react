@@ -95,12 +95,15 @@ function NumSpace(props) {
     if ((numSpaceState.row + 1) % sidesPerSquare == 0)
       classString += " bottom ";
 
+
+
     return classString;
   };
 
   const returnValue = () => {
     return (
       <div
+      id={props.id}
         className={returnClass() + " square"}
         style={{
           
@@ -108,7 +111,7 @@ function NumSpace(props) {
           textAlign: "center",
           fontSize: "2em",
         }}
-        onKeyDown={(e) => keyPressHandler(e)}
+        // onKeyDown={(e) => keyPressHandler(e)}
         onClick={() =>
           props.spaceClickHandler(numSpaceState.row, numSpaceState.col)
         }

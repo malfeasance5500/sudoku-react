@@ -2,7 +2,15 @@ import React from "react";
 import { sudokuGen } from "../Services/sudokuGen";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setAllAquares, setCorrect, setSelected, setSquare } from "../actions";
+import {
+  addCorrect,
+  addUndo,
+  removeCorrect,
+  setAllAquares,
+  setCorrect,
+  setSelected,
+  setSquare,
+} from "../actions";
 import NumSpace from "./NumSpace";
 import NumPad from "./NumPad";
 import DifficultySelection from "./DifficultySelection";
@@ -16,6 +24,8 @@ function Board() {
   const boardState = useSelector((state) => state.board);
   const squareState = useSelector((state) => state.squares);
   const correctState = useSelector((state) => state.correct);
+  const selected = useSelector((state) => state.selected);
+  const isNote = useSelector((state) => state.notes);
 
   // generate the sudoku board
   useEffect(async () => {
@@ -61,10 +71,75 @@ function Board() {
     dispatch(setCorrect({}));
     spaceClickHandler(0, 0, genNum);
 
+    document.getElementById("0").click();
+
     // console.log(genNum);
   }, [boardState]);
 
-  // Calculates which squares to add css styles to upon square click 
+  const spaceClickInput = (e) => {
+    const square = squareState[selected];
+    const selectedCol = squareState[selected].col;
+    const selectedRow = squareState[selected].row;
+    const pressedKey = e.key;
+    if (
+      square.hidden &&
+      Object.keys(correctState).length !=
+        boardState.sidesPerSquare ** 4 - boardState.squaresShown &&
+      !isNaN(pressedKey) &&
+      pressedKey != 0
+    ) {
+      if (!isNote) {
+        dispatch(
+          addUndo(
+            setSquare(square.coord, {
+              notes: { ...square.notes },
+              EnteredNum: square.EnteredNum,
+            })
+          )
+        );
+
+        dispatch(
+          setSquare(square.coord, {
+            notes: {},
+            EnteredNum: parseInt(pressedKey),
+          })
+        );
+
+        if (parseInt(pressedKey) === square.num) {
+          dispatch(addCorrect(square.coord));
+          dispatch(addUndo(removeCorrect(square.coord)));
+        } else if (correctState[selected]) {
+          dispatch(removeCorrect(square.coord));
+          dispatch(addUndo(addCorrect(square.coord)));
+        }
+
+        spaceClickHandler(square.row, square.col, false, parseInt(pressedKey));
+      } else {
+        let notes = { ...square.notes };
+        if (notes[pressedKey]) delete notes[pressedKey];
+        else notes[pressedKey] = pressedKey;
+
+        dispatch(
+          addUndo(
+            setSquare(square.coord, {
+              notes: { ...square.notes },
+              EnteredNum: square.EnteredNum,
+            })
+          )
+        );
+        dispatch(setSquare(square.coord, { notes, EnteredNum: null }));
+
+        if (square.EnteredNum == square.num) {
+          dispatch(removeCorrect(square.coord));
+          dispatch(addUndo(addCorrect(square.coord)));
+        }
+
+        spaceClickHandler(square.row, square.col, false, 0);
+      }
+    }
+  };
+
+  // Calculates which squares to add css styles to upon square click
   const spaceClickHandler = (
     row,
     col,
@@ -201,8 +276,16 @@ function Board() {
   };
 
   return (
-    <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>
-      <div style={{width: "100%" }}>
+    <div
+      id="Board"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      onKeyDown={(e) => spaceClickInput(e)}
+    >
+      <div style={{ width: "100%" }}>
         <DifficultySelection />
         <div
           style={{
@@ -241,7 +324,7 @@ function Board() {
           )}
         </div>
       </div>
-      <div style={{width: "100%"}}>
+      <div style={{ width: "100%" }}>
         <div style={{ textAlign: "center" }}>
           <UndoButton />
           <EraseButton />
